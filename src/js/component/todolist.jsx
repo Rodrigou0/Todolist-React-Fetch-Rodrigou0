@@ -18,8 +18,21 @@ const TodoList = () => {
       .then((res) => res.json())
       .then((resAsJson) => {
         console.log(resAsJson);
-        setUser("");
         getTasks();
+      })
+      .catch((Err) => {
+        console.log(Err);
+      });
+  };
+  const deleteUser = () => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/" + user, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((resAsJson) => {
+        console.log(resAsJson);
+        setUser("");
+        setTasks([]);
       })
       .catch((Err) => {
         console.log(Err);
@@ -108,12 +121,17 @@ const TodoList = () => {
       />
       <ul>
         {tasks.map((task) => (
-          <li key={task.label} className="task-item">
-            <div>{task.label}</div>
-            <button className="btn1 task-delete" onClick={() => deleteTask(task.label)}>X</button>
-          </li>
+            <li key={task.label} className="task-item">
+              <div>{task.label}</div>
+              <button className="btn1 task-delete" onClick={() => deleteTask(task.label)}>X</button>
+            </li>
         ))}
       </ul>
+      {user && (
+            <button className="btn1 delete-user" onClick={deleteUser}>
+              Delete User
+            </button>
+          )}
     </div>
   );
 };
